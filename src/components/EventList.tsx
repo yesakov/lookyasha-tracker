@@ -1,9 +1,10 @@
 "use client";
 
 import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "convex/_generated/api";
+
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, Users } from "lucide-react";
 import { useState } from "react";
 
 export default function EventList() {
@@ -32,19 +33,24 @@ export default function EventList() {
         <div className="container animate-fade-in">
             <header className="flex-between" style={{ marginBottom: '2rem' }}>
                 <div>
-                    <h1 style={{ color: 'var(--accent)' }}>Lookyasha</h1>
+                    <h1 style={{ color: 'var(--accent)', fontSize: '2rem' }}>⚽ Lookyasha</h1>
                     <p style={{ color: 'var(--muted-foreground)' }}>Football Tracker</p>
                 </div>
-                <button
-                    className="btn btn-primary"
-                    onClick={() => setIsCreating(true)}
-                >
-                    <Plus size={18} /> New Event
-                </button>
+                <div className="flex-between" style={{ gap: '0.5rem' }}>
+                    <Link href="/players" className="btn btn-secondary" style={{ padding: '0.6rem' }}>
+                        <Users size={20} />
+                    </Link>
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => setIsCreating(true)}
+                    >
+                        <Plus size={18} /> <span className="hide-mobile">New Event</span>
+                    </button>
+                </div>
             </header>
 
             {isCreating && (
-                <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem' }}>
+                <div className="glass-panel shadow-lg" style={{ padding: '1.5rem', marginBottom: '2rem', border: '1px solid var(--accent)' }}>
                     <form onSubmit={handleCreateEvent} className="stack">
                         <h3 style={{ marginBottom: '0.5rem' }}>Create New Event</h3>
                         <input
@@ -75,8 +81,8 @@ export default function EventList() {
                 </div>
             )}
 
-            <section className="stack">
-                <h2 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>
+            <section className="stack" style={{ gap: '1.5rem' }}>
+                <h2 style={{ fontSize: '1.25rem' }}>
                     {events.length > 0 ? 'Active Events' : 'No events yet'}
                 </h2>
                 <div className="stack">
@@ -90,7 +96,7 @@ export default function EventList() {
                             <div className="flex-between">
                                 <h3 style={{ fontSize: '1.1rem' }}>{event.name}</h3>
                                 <span style={{ color: 'var(--accent)', fontSize: '0.875rem', fontWeight: 600 }}>
-                                    View Details
+                                    Live Details →
                                 </span>
                             </div>
                             <p style={{ color: 'var(--muted-foreground)', fontSize: '0.875rem' }}>
@@ -101,9 +107,17 @@ export default function EventList() {
                 </div>
             </section>
 
-            <footer style={{ marginTop: '3rem', textAlign: 'center', color: 'var(--muted-foreground)', fontSize: '0.875rem' }}>
-                Built for champions.
+            <footer style={{ marginTop: '4rem', textAlign: 'center', borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
+                <Link href="/players" className="btn btn-secondary" style={{ width: '100%', justifyContent: 'center' }}>
+                    <Users size={18} /> Manage All Players
+                </Link>
             </footer>
+
+            <style jsx>{`
+                @media (max-width: 480px) {
+                    .hide-mobile { display: none; }
+                }
+            `}</style>
         </div>
     );
 }

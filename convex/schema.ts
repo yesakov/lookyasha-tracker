@@ -12,10 +12,18 @@ export default defineSchema({
         eventId: v.id("events"),
     }).index("by_event", ["eventId"]),
 
+    // Global Players - persisted across the whole app
     players: defineTable({
         name: v.string(),
+        shirtType: v.string(), // "color" or "club"
+        shirtValue: v.string(), // Hex color code or Club Name (e.g. "Real Madrid")
+    }),
+
+    // Join table to assign players to teams within specific events
+    team_players: defineTable({
         teamId: v.id("teams"),
-    }).index("by_team", ["teamId"]),
+        playerId: v.id("players"),
+    }).index("by_team", ["teamId"]).index("by_player", ["playerId"]),
 
     matches: defineTable({
         eventId: v.id("events"),

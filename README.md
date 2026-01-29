@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ⚽ Lookyasha Football Tracker
 
-## Getting Started
+A premium, real-time web application for tracking football matches, goals, and assists within a group of friends or a small company.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **🏆 Real-time Standings**: Instant table updates as matches finish, including Points, GD, GF, and GA.
+- **👕 Professional Jersey Engine**: Hand-crafted SVG jerseys for 30+ European top clubs (Real Madrid, Barca, Dynamo Kyiv, etc.).
+- **👥 Squad Manager**: Persistent player management. Create your group once and use them across multiple events.
+- **👟 Advanced Stats**: Track not just scorers, but also assist leaders (Golden Boot & Assist King races).
+- **🛠 Easy Editing**: Reopen matches, remove accidental goals, or delete scheduled games with a few clicks.
+- **✨ Premium UI**: Responsive, mobile-first design with a dark glassmorphism aesthetic and smooth micro-animations.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend**: [Next.js](https://nextjs.org/) (App Router, TypeScript)
+- **Backend/Database**: [Convex](https://www.convex.dev/) (Real-time Database)
+- **Styling**: Vanilla CSS (Modern Design System)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠 Local Development
 
-## Learn More
+1. **Clone the repo**
+2. **Install dependencies**: `npm install`
+3. **Setup Convex**: Run `npx convex dev` (this will guide you through creating a free account and project)
+4. **Run Next.js**: `npm run dev`
 
-To learn more about Next.js, take a look at the following resources:
+## 🌍 Deployment (Vercel + Convex)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Push your code to GitHub**.
+2. **Setup Convex Production**:
+   - Go to the [Convex Dashboard](https://dashboard.convex.dev/).
+   - Click on **Settings** -> **Deployment Keys**.
+   - Copy the `CONVEX_DEPLOY_KEY`.
+3. **Deploy to Vercel**:
+   - Create a new project in Vercel and link your GitHub repo.
+   - In the **Environment Variables** section, add:
+     - `NEXT_PUBLIC_CONVEX_URL`: Your Convex production URL (found in Convex Dashboard -> Settings).
+     - `CONVEX_DEPLOY_KEY`: The key you copied in the previous step.
+   - Vercel will automatically build and deploy your app.
+4. **Success!** Your app is now live with a real-time production database.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛡 Security & Privacy
 
-## Deploy on Vercel
+The following sensitive files are **never** committed to the public repository:
+- `.env.local`: Contains your local Convex URL and keys.
+- `.env.*.local`: Any local environment variations.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Make sure your `.gitignore` includes `.env*` to prevent accidental leaks.
