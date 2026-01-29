@@ -6,7 +6,7 @@ export default defineSchema({
         name: v.string(),
         date: v.string(),
         description: v.optional(v.string()),
-    }),
+    }).index("by_date", ["date"]),
     teams: defineTable({
         name: v.string(),
         eventId: v.id("events"),

@@ -4,7 +4,7 @@ import { query } from "./_generated/server";
 export const getEvents = query({
     args: {},
     handler: async (ctx) => {
-        return await ctx.db.query("events").order("desc").collect();
+        return await ctx.db.query("events").withIndex("by_date").order("desc").collect();
     },
 });
 
