@@ -2,8 +2,9 @@
 
 import { useQuery, useMutation } from "convex/react";
 import { api } from "convex/_generated/api";
+import { Header } from "./Header";
 import Link from "next/link";
-import { ChevronLeft, Plus, Users, Trophy, Play, CheckCircle, UserPlus, Footprints, ListOrdered, Trash2, Edit3, XCircle, Search } from "lucide-react";
+import { Plus, Users, Trophy, Play, CheckCircle, Footprints, ListOrdered, Trash2, Edit3, XCircle, Search } from "lucide-react";
 import { useState, useMemo } from "react";
 import { Id } from "convex/_generated/dataModel";
 import PlayerAvatar from "./PlayerAvatar";
@@ -105,6 +106,18 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
         };
     }, [data]);
 
+    const sortedMatchesWithNumbers = useMemo(() => {
+        if (!data?.matches) return [];
+        // Stable order by creation time
+        const baseOrder = [...data.matches].sort((a, b) => a._creationTime - b._creationTime);
+        const gameNumbers = new Map(baseOrder.map((m, i) => [m._id, i + 1]));
+
+        // Display order: finished games at the bottom
+        return [...data.matches]
+            .sort((a, b) => (a.status === 'finished' ? 1 : 0) - (b.status === 'finished' ? 1 : 0))
+            .map(m => ({ ...m, gameNumber: gameNumbers.get(m._id) }));
+    }, [data?.matches]);
+
     const filteredGlobalPlayers = useMemo(() => {
         if (!allGlobalPlayers) return [];
         const query = playerSearchQuery.toLowerCase();
@@ -180,13 +193,7 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
 
     return (
         <div className="container animate-fade-in">
-            <header className="flex-between" style={{ marginBottom: '2rem' }}>
-                <Link href="/" className="btn btn-secondary" style={{ padding: '0.5rem' }}>
-                    <ChevronLeft size={20} />
-                </Link>
-                <h1 style={{ fontSize: '1.5rem', color: 'var(--accent)' }}>{event.name}</h1>
-                <div style={{ width: '40px' }}></div>
-            </header>
+            <Header title={event.name} backPath="/" />
 
             <div className="stack" style={{ gap: '2.5rem' }}>
                 {/* Teams Section */}
@@ -288,78 +295,6 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
                     </div>
                 </section>
 
-                {/* Scoreboard Section */}
-                {scoreboard.scorers.length > 0 && (
-                    <section className="stack">
-                        <h2 className="flex-between" style={{ gap: '0.5rem', fontSize: '1.1rem', marginBottom: '0.5rem' }}>
-                            <ListOrdered size={18} color="var(--accent)" /> Golden Boot Race
-                        </h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                            <div className="card stack shadow-lg" style={{ padding: '1rem', border: '1px solid rgba(190, 242, 100, 0.2)' }}>
-                                <h3 style={{ fontSize: '0.85rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>Top Scorers</h3>
-                                {scoreboard.scorers.map((s, i) => (
-                                    <div key={i} className="flex-between" style={{ padding: '0.5rem 0', borderBottom: i < scoreboard.scorers.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                            <span style={{ width: '1rem', fontWeight: 800, color: i === 0 ? 'var(--accent)' : 'var(--muted-foreground)' }}>{i + 1}</span>
-                                            <PlayerAvatar shirtType={s.shirtType} shirtValue={s.shirtValue} size={24} />
-                                            <span style={{ fontWeight: 600 }}>{s.name}</span>
-                                        </div>
-                                        <span style={{ fontWeight: 800, color: 'var(--accent)', fontSize: '1.1rem' }}>{s.count}</span>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="card stack shadow-lg" style={{ padding: '1rem' }}>
-                                <h3 style={{ fontSize: '0.85rem', color: 'var(--muted-foreground)', textTransform: 'uppercase', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>Top Assists</h3>
-                                {scoreboard.assistants.map((s, i) => (
-                                    <div key={i} className="flex-between" style={{ padding: '0.5rem 0', borderBottom: i < scoreboard.assistants.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                            <span style={{ width: '1rem', fontWeight: 800, color: i === 0 ? 'var(--accent)' : 'var(--muted-foreground)' }}>{i + 1}</span>
-                                            <PlayerAvatar shirtType={s.shirtType} shirtValue={s.shirtValue} size={24} />
-                                            <span style={{ fontWeight: 600 }}>{s.name}</span>
-                                        </div>
-                                        <span style={{ fontWeight: 800, color: 'var(--accent)', fontSize: '1.1rem' }}>{s.count}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-                )}
-
-                {/* Standings Section */}
-                {teams.length > 0 && (
-                    <section className="stack">
-                        <h2 className="flex-between" style={{ gap: '0.5rem', fontSize: '1.1rem', marginBottom: '0.5rem' }}>
-                            <Trophy size={18} color="var(--accent)" /> Table Standings
-                        </h2>
-                        <div className="card shadow-lg" style={{ padding: '0.25rem', overflowX: 'auto' }}>
-                            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                                <thead>
-                                    <tr style={{ borderBottom: '2px solid var(--border)', color: 'var(--muted-foreground)', fontSize: '0.75rem' }}>
-                                        <th style={{ padding: '1rem' }}>TEAM</th>
-                                        <th style={{ padding: '1rem', textAlign: 'center' }}>P</th>
-                                        <th style={{ padding: '1rem', textAlign: 'center' }}>GF</th>
-                                        <th style={{ padding: '1rem', textAlign: 'center' }}>GA</th>
-                                        <th style={{ padding: '1rem', textAlign: 'center' }}>GD</th>
-                                        <th style={{ padding: '1rem', textAlign: 'center' }}>PTS</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {standings.map((s, i) => (
-                                        <tr key={i} style={{ borderBottom: i === standings.length - 1 ? 'none' : '1px solid var(--border)' }}>
-                                            <td style={{ padding: '1rem', fontWeight: 800, color: i === 0 ? 'var(--accent)' : 'inherit' }}>{s.name}</td>
-                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.played}</td>
-                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.gf}</td>
-                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.ga}</td>
-                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.gf - s.ga}</td>
-                                            <td style={{ padding: '1rem', textAlign: 'center', color: 'var(--accent)', fontWeight: 800, fontSize: '1.1rem' }}>{s.pts}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </section>
-                )}
-
                 {/* Matches Section */}
                 <section className="stack">
                     <div className="flex-between" style={{ marginBottom: '1rem' }}>
@@ -397,8 +332,12 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
                                 No matches yet. Let's kick off!
                             </div>
                         ) : (
-                            matches.sort((a, b) => (b.status === 'finished' ? -1 : 1)).map((match) => (
+                            sortedMatchesWithNumbers.map((match) => (
                                 <div key={match._id} className="card stack" style={{ padding: '1.25rem', borderLeft: match.status === 'in_progress' ? '4px solid var(--accent)' : '1px solid var(--border)' }}>
+                                    <div style={{ fontSize: '0.65rem', color: 'var(--muted-foreground)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between' }}>
+                                        <span>Game {match.gameNumber}</span>
+                                        {match.status === 'finished' && <span>Result</span>}
+                                    </div>
                                     <div className="flex-between">
                                         <span style={{ fontWeight: 800, flex: 1, textAlign: 'right', paddingRight: '1rem', fontSize: '1.1rem' }}>
                                             {teams.find(t => t._id === match.homeTeamId)?.name}
@@ -561,6 +500,83 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
                         )}
                     </div>
                 </section>
+
+                {/* Standings Section */}
+                {teams.length > 0 && (
+                    <section className="stack">
+                        <h2 className="flex-between" style={{ gap: '0.5rem', fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+                            <Trophy size={18} color="var(--accent)" /> Table Standings
+                        </h2>
+                        <div className="card shadow-lg" style={{ padding: '0.25rem', overflowX: 'auto' }}>
+                            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                                <thead>
+                                    <tr style={{ borderBottom: '2px solid var(--border)', color: 'var(--muted-foreground)', fontSize: '0.75rem' }}>
+                                        <th style={{ padding: '1rem' }}>TEAM</th>
+                                        <th style={{ padding: '1rem', textAlign: 'center' }}>P</th>
+                                        <th style={{ padding: '1rem', textAlign: 'center' }}>GF</th>
+                                        <th style={{ padding: '1rem', textAlign: 'center' }}>GA</th>
+                                        <th style={{ padding: '1rem', textAlign: 'center' }}>GD</th>
+                                        <th style={{ padding: '1rem', textAlign: 'center' }}>PTS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {standings.map((s, i) => (
+                                        <tr key={i} style={{ borderBottom: i === standings.length - 1 ? 'none' : '1px solid var(--border)' }}>
+                                            <td style={{ padding: '1rem', fontWeight: 800, color: i === 0 ? 'var(--accent)' : 'inherit' }}>{s.name}</td>
+                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.played}</td>
+                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.gf}</td>
+                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.ga}</td>
+                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.gf - s.ga}</td>
+                                            <td style={{ padding: '1rem', textAlign: 'center', color: 'var(--accent)', fontWeight: 800, fontSize: '1.1rem' }}>{s.pts}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                )}
+
+                {/* Scoreboard Section - Top Scorers */}
+                {scoreboard.scorers.length > 0 && (
+                    <section className="stack">
+                        <h2 className="flex-between" style={{ gap: '0.5rem', fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+                            <ListOrdered size={18} color="var(--accent)" /> Top Scorers
+                        </h2>
+                        <div className="card stack shadow-lg" style={{ padding: '1rem', border: '1px solid rgba(190, 242, 100, 0.2)' }}>
+                            {scoreboard.scorers.map((s, i) => (
+                                <div key={i} className="flex-between" style={{ padding: '0.5rem 0', borderBottom: i < scoreboard.scorers.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <span style={{ width: '1rem', fontWeight: 800, color: i === 0 ? 'var(--accent)' : 'var(--muted-foreground)' }}>{i + 1}</span>
+                                        <PlayerAvatar shirtType={s.shirtType} shirtValue={s.shirtValue} size={24} />
+                                        <span style={{ fontWeight: 600 }}>{s.name}</span>
+                                    </div>
+                                    <span style={{ fontWeight: 800, color: 'var(--accent)', fontSize: '1.1rem' }}>{s.count}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Scoreboard Section - Top Assists */}
+                {scoreboard.assistants.length > 0 && (
+                    <section className="stack">
+                        <h2 className="flex-between" style={{ gap: '0.5rem', fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+                            <ListOrdered size={18} color="var(--accent)" /> Top Assists
+                        </h2>
+                        <div className="card stack shadow-lg" style={{ padding: '1rem' }}>
+                            {scoreboard.assistants.map((s, i) => (
+                                <div key={i} className="flex-between" style={{ padding: '0.5rem 0', borderBottom: i < scoreboard.assistants.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <span style={{ width: '1rem', fontWeight: 800, color: i === 0 ? 'var(--accent)' : 'var(--muted-foreground)' }}>{i + 1}</span>
+                                        <PlayerAvatar shirtType={s.shirtType} shirtValue={s.shirtValue} size={24} />
+                                        <span style={{ fontWeight: 600 }}>{s.name}</span>
+                                    </div>
+                                    <span style={{ fontWeight: 800, color: 'var(--accent)', fontSize: '1.1rem' }}>{s.count}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
             </div>
 
         </div>

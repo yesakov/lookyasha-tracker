@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 import { ConvexClientProvider } from "@/components/ConvexClientProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export default function RootLayout({
   children,
@@ -25,11 +26,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ConvexClientProvider>
-          <main>{children}</main>
-        </ConvexClientProvider>
+        <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
+          <ConvexClientProvider>
+            <main>{children}</main>
+          </ConvexClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

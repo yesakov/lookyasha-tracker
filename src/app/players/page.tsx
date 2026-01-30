@@ -2,8 +2,8 @@
 
 import { useQuery, useMutation } from "convex/react";
 import { api } from "convex/_generated/api";
-import Link from "next/link";
-import { ChevronLeft, UserPlus, Trash2, Edit2, Check, X, Palette, Trophy, Search } from "lucide-react";
+import { Header } from "@/components/Header";
+import { UserPlus, Trash2, Edit2, Check, X, Palette, Trophy, Search } from "lucide-react";
 import { useState, useMemo } from "react";
 import PlayerAvatar from "@/components/PlayerAvatar";
 import { Id } from "convex/_generated/dataModel";
@@ -78,19 +78,13 @@ export default function PlayersPage() {
 
     return (
         <div className="container animate-fade-in">
-            <header className="flex-between" style={{ marginBottom: "2rem" }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <Link href="/" className="btn btn-secondary" style={{ padding: "0.5rem" }}>
-                        <ChevronLeft size={20} />
-                    </Link>
-                    <h1 style={{ fontSize: "1.5rem", color: "var(--accent)" }}>Squad Manager</h1>
-                </div>
+            <Header title="Squad Manager" backPath="/" titleIcon="👥">
                 {!isCreating && !editingId && (
                     <button className="btn btn-primary" onClick={() => setIsCreating(true)}>
                         <UserPlus size={18} /> New Player
                     </button>
                 )}
-            </header>
+            </Header>
 
             {(isCreating || editingId) && (
                 <form onSubmit={handleSubmit} className="card stack shadow-2xl" style={{ marginBottom: "2.5rem", border: "2px solid var(--accent)" }}>

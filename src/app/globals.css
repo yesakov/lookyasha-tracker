@@ -22,10 +22,25 @@
   color-scheme: dark;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+[data-theme='light'] {
+  --background: #f8fafc;
+  --foreground: #020617;
+  --accent: #65a30d;
+  /* Deep Lime/Green for better contrast on light */
+  --accent-hover: #4d7c0f;
+  --accent-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #1e293b;
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --border: #e2e8f0;
+  --input: #ffffff;
+  --ring: #65a30d;
+  --glass: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  color-scheme: light;
 }
 
 html,
@@ -35,7 +50,9 @@ body {
   color: var(--foreground);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 
 body {
   display: flex;

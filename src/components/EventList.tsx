@@ -6,6 +6,7 @@ import { api } from "convex/_generated/api";
 import Link from "next/link";
 import { Plus, Users } from "lucide-react";
 import { useState } from "react";
+import { Header } from "./Header";
 
 export default function EventList() {
     const events = useQuery(api.queries.getEvents);
@@ -31,23 +32,17 @@ export default function EventList() {
 
     return (
         <div className="container animate-fade-in">
-            <header className="flex-between" style={{ marginBottom: '2rem' }}>
-                <div>
-                    <h1 style={{ color: 'var(--accent)', fontSize: '2rem' }}>⚽ Lookyasha</h1>
-                    <p style={{ color: 'var(--muted-foreground)' }}>Football Tracker</p>
-                </div>
-                <div className="flex-between" style={{ gap: '0.5rem' }}>
-                    <Link href="/players" className="btn btn-secondary" style={{ padding: '0.6rem' }}>
-                        <Users size={20} />
-                    </Link>
-                    <button
-                        className="btn btn-primary"
-                        onClick={() => setIsCreating(true)}
-                    >
-                        <Plus size={18} /> <span className="hide-mobile">New Event</span>
-                    </button>
-                </div>
-            </header>
+            <Header title="Lookyasha" subtitle="Football Tracker">
+                <Link href="/players" className="btn btn-secondary" title="Manage Players" style={{ padding: '0.6rem' }}>
+                    <Users size={20} />
+                </Link>
+                <button
+                    className="btn btn-primary"
+                    onClick={() => setIsCreating(true)}
+                >
+                    <Plus size={18} /> <span className="hide-mobile">New Event</span>
+                </button>
+            </Header>
 
             {isCreating && (
                 <div className="glass-panel shadow-lg" style={{ padding: '1.5rem', marginBottom: '2rem', border: '1px solid var(--accent)' }}>
