@@ -203,7 +203,7 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
                             <Users size={18} /> Teams & Lineups
                         </h2>
                         <button className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }} onClick={() => setIsAddingTeam(true)}>
-                            + Create Team
+                            <Plus size={14} /> <span className="mobile-hidden">Create Team</span>
                         </button>
                     </div>
 
@@ -301,7 +301,7 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
                         <h2 style={{ fontSize: '1.1rem' }}>Fixtures & Results</h2>
                         {teams.length >= 2 && (
                             <button className="btn btn-primary" onClick={() => setIsAddingMatch(true)}>
-                                <Plus size={18} /> Schedule Match
+                                <Plus size={18} /> <span className="mobile-hidden">Schedule Match</span>
                             </button>
                         )}
                     </div>

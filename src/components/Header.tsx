@@ -14,21 +14,21 @@ interface HeaderProps {
 
 export function Header({ title, subtitle, backPath, children, titleIcon = "⚽" }: HeaderProps) {
     return (
-        <header className="flex-between" style={{ marginBottom: '2rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <header className="flex-between" style={{ marginBottom: '1.5rem', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
                 {backPath && (
-                    <Link href={backPath} className="btn btn-secondary" style={{ padding: '0.5rem' }}>
+                    <Link href={backPath} className="btn btn-secondary" style={{ padding: '0.5rem', flexShrink: 0 }}>
                         <ChevronLeft size={20} />
                     </Link>
                 )}
-                <div>
-                    <h1 style={{ color: 'var(--accent)', fontSize: backPath ? '1.5rem' : '2rem' }}>
+                <div style={{ minWidth: 0, overflow: 'hidden' }}>
+                    <h1 className={`header-title ${backPath ? 'sub' : 'main'}`} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {titleIcon} {title}
                     </h1>
-                    {subtitle && <p style={{ color: 'var(--muted-foreground)' }}>{subtitle}</p>}
+                    {subtitle && <p className="header-subtitle" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{subtitle}</p>}
                 </div>
             </div>
-            <div className="flex-between" style={{ gap: '0.5rem' }}>
+            <div className="flex-between" style={{ gap: '0.2rem', flexShrink: 0 }}>
                 <ThemeToggle />
                 {children}
             </div>

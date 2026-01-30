@@ -40,7 +40,7 @@ export default function EventList() {
                     className="btn btn-primary"
                     onClick={() => setIsCreating(true)}
                 >
-                    <Plus size={18} /> <span className="hide-mobile">New Event</span>
+                    <Plus size={18} /> <span className="mobile-hidden">New Event</span>
                 </button>
             </Header>
 
@@ -107,12 +107,6 @@ export default function EventList() {
                     <Users size={18} /> Manage All Players
                 </Link>
             </footer>
-
-            <style jsx>{`
-                @media (max-width: 480px) {
-                    .hide-mobile { display: none; }
-                }
-            `}</style>
         </div>
     );
 }

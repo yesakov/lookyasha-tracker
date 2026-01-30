@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   description: "Track your football results, stats, and standings.",
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
