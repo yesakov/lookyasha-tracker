@@ -10,6 +10,8 @@ export default defineSchema({
     teams: defineTable({
         name: v.string(),
         eventId: v.id("events"),
+        badgeType: v.optional(v.string()), // "color" or "club"
+        badgeValue: v.optional(v.string()), // Hex color or Club Name
     }).index("by_event", ["eventId"]),
 
     // Global Players - persisted across the whole app
@@ -45,5 +47,6 @@ export default defineSchema({
         assistantId: v.optional(v.id("players")),
         minute: v.optional(v.number()),
         teamId: v.id("teams"),
+        isOwnGoal: v.optional(v.boolean()),
     }).index("by_match", ["matchId"]),
 });

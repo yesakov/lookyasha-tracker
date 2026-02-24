@@ -12,12 +12,59 @@ export const createEvent = mutation({
 });
 
 export const createTeam = mutation({
-    args: { name: v.string(), eventId: v.id("events") },
+    args: {
+        name: v.string(),
+        eventId: v.id("events"),
+        badgeType: v.optional(v.string()),
+        badgeValue: v.optional(v.string()),
+    },
     handler: async (ctx, args) => {
         return await ctx.db.insert("teams", {
             name: args.name,
             eventId: args.eventId,
+            badgeType: args.badgeType,
+            badgeValue: args.badgeValue,
         });
+    },
+});
+
+export const deleteTeam = mutation({
+    args: { teamId: v.id("teams") },
+    handler: async (ctx, args) => {
+        // 1. Delete all team_players assignments
+        const teamPlayers = await ctx.db
+            .query("team_players")
+            .withIndex("by_team", (q) => q.eq("teamId", args.teamId))
+            .collect();
+        for (const tp of teamPlayers) {
+            await ctx.db.delete(tp._id);
+        }
+
+        // 2. Delete all matches where this team participated
+        const matches = await ctx.db
+            .query("matches")
+            .filter((q) =>
+                q.or(
+                    q.eq(q.field("homeTeamId"), args.teamId),
+                    q.eq(q.field("awayTeamId"), args.teamId)
+                )
+            )
+            .collect();
+
+        for (const match of matches) {
+            // 3. Delete all goals for these matches
+            const goals = await ctx.db
+                .query("goals")
+                .withIndex("by_match", (q) => q.eq("matchId", match._id))
+                .collect();
+            for (const goal of goals) {
+                await ctx.db.delete(goal._id);
+            }
+            await ctx.db.delete(match._id);
+        }
+
+        // 4. Finally, delete the team
+        await ctx.db.delete(args.teamId);
     },
 });
 
@@ -147,6 +194,7 @@ export const addGoal = mutation({
         scorerId: v.id("players"),
         teamId: v.id("teams"),
         assistantId: v.optional(v.id("players")),
+        isOwnGoal: v.optional(v.boolean()),
     },
     handler: async (ctx, args) => {
         const match = await ctx.db.get(args.matchId);
@@ -157,6 +205,7 @@ export const addGoal = mutation({
             scorerId: args.scorerId,
             teamId: args.teamId,
             assistantId: args.assistantId,
+            isOwnGoal: args.isOwnGoal,
         });
 
         if (match.homeTeamId === args.teamId) {
