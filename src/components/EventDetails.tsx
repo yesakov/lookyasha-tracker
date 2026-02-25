@@ -484,28 +484,18 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
                                             <span>Game {match.gameNumber}</span>
                                             {match.status === 'finished' && <span>Result</span>}
                                         </div>
-                                        <div className="flex-between" style={{ alignItems: 'center', gap: '0.5rem' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, justifyContent: 'flex-end', minWidth: 0 }}>
-                                                <span style={{ fontWeight: 800, textAlign: 'right', fontSize: '1.1rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', lineHeight: '1.2' }}>
+                                        <div className="match-row">
+                                            <div className="match-team home">
+                                                <span className="team-name">
                                                     {teams.find(t => t._id === match.homeTeamId)?.name}
                                                 </span>
                                                 <TeamBadge badgeType={teams.find(t => t._id === match.homeTeamId)?.badgeType || 'color'} badgeValue={teams.find(t => t._id === match.homeTeamId)?.badgeValue || '#eee'} size={32} />
                                             </div>
 
-                                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem', padding: '0 0.5rem', flexShrink: 0 }}>
-                                                <span style={{
+                                            <div className="score-chip-container">
+                                                <span className="score-chip" style={{
                                                     background: match.status === 'in_progress' ? 'rgba(190, 242, 100, 0.1)' : 'var(--secondary)',
-                                                    width: '85px',
-                                                    height: '48px',
-                                                    borderRadius: 'var(--radius)',
-                                                    fontWeight: 900,
-                                                    fontSize: '1.5rem',
                                                     border: match.status === 'in_progress' ? '1px solid var(--accent)' : '1px solid var(--border)',
-                                                    textAlign: 'center',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    lineHeight: 1
                                                 }}>
                                                     {match.homeScore} - {match.awayScore}
                                                 </span>
@@ -514,9 +504,9 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
                                                 </span>
                                             </div>
 
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, justifyContent: 'flex-start', minWidth: 0 }}>
+                                            <div className="match-team away">
                                                 <TeamBadge badgeType={teams.find(t => t._id === match.awayTeamId)?.badgeType || 'color'} badgeValue={teams.find(t => t._id === match.awayTeamId)?.badgeValue || '#eee'} size={32} />
-                                                <span style={{ fontWeight: 800, textAlign: 'left', fontSize: '1.1rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', lineHeight: '1.2' }}>
+                                                <span className="team-name">
                                                     {teams.find(t => t._id === match.awayTeamId)?.name}
                                                 </span>
                                             </div>
@@ -601,9 +591,9 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
                                                 {!selectedScorerId ? (
                                                     <>
                                                         <p style={{ fontSize: '0.9rem', fontWeight: 800, marginBottom: '0.5rem' }}>Select Scorer ⚽</p>
-                                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                                        <div className="scorer-grid">
                                                             <div className="stack" style={{ gap: '0.5rem' }}>
-                                                                <p style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', fontWeight: 800 }}>HOME</p>
+                                                                <p style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', fontWeight: 800 }}>{teams.find(t => t._id === match.homeTeamId)?.name || 'HOME'}</p>
                                                                 {players.map(p => (
                                                                     <button
                                                                         key={p._id}
@@ -620,7 +610,7 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
                                                                 ))}
                                                             </div>
                                                             <div className="stack" style={{ gap: '0.5rem' }}>
-                                                                <p style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', fontWeight: 800 }}>AWAY</p>
+                                                                <p style={{ fontSize: '0.7rem', color: 'var(--muted-foreground)', fontWeight: 800 }}>{teams.find(t => t._id === match.awayTeamId)?.name || 'AWAY'}</p>
                                                                 {players.map(p => (
                                                                     <button
                                                                         key={p._id}

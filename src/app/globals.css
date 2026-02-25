@@ -258,6 +258,105 @@ select.input option {
   gap: 1rem;
 }
 
+/* Responsive Grid for Scorer Selection */
+.scorer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .scorer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Match Score Row Enhancements */
+.match-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.match-team {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.match-team.home {
+  justify-content: flex-end;
+}
+
+.match-team.away {
+  justify-content: flex-start;
+}
+
+.team-name {
+  font-weight: 800;
+  font-size: 1.1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.score-chip-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  flex-shrink: 0;
+}
+
+.score-chip {
+  width: 85px;
+  height: 48px;
+  border-radius: var(--radius);
+  font-weight: 900;
+  font-size: 1.5rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+@media (max-width: 500px) {
+  .match-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .match-team {
+    width: 100%;
+    justify-content: center !important;
+  }
+
+  .match-team.home {
+    order: 1;
+  }
+
+  .score-chip-container {
+    order: 2;
+  }
+
+  .match-team.away {
+    order: 3;
+  }
+
+  .team-name {
+    font-size: 1.2rem;
+    white-space: normal;
+    text-align: center;
+    max-width: 200px;
+  }
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
