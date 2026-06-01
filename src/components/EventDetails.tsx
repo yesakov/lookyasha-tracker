@@ -729,18 +729,18 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
                                         <Trophy size={18} color="var(--accent)" /> Table Standings
                                     </h2>
                                     <div className="card shadow-lg" style={{ padding: '0.25rem', overflowX: 'auto' }}>
-                                        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                                        <table className="standings-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                                             <thead>
                                                 <tr style={{ borderBottom: '2px solid var(--border)', color: 'var(--muted-foreground)', fontSize: '0.75rem' }}>
-                                                    <th style={{ padding: '1rem' }}>TEAM</th>
-                                                    <th style={{ padding: '1rem', textAlign: 'center' }}>P</th>
-                                                    <th style={{ padding: '1rem', textAlign: 'center' }}>W</th>
-                                                    <th style={{ padding: '1rem', textAlign: 'center' }}>D</th>
-                                                    <th style={{ padding: '1rem', textAlign: 'center' }}>L</th>
-                                                    <th style={{ padding: '1rem', textAlign: 'center' }}>GF</th>
-                                                    <th style={{ padding: '1rem', textAlign: 'center' }}>GA</th>
-                                                    <th style={{ padding: '1rem', textAlign: 'center' }}>GD</th>
-                                                    <th style={{ padding: '1rem', textAlign: 'center' }}>PTS</th>
+                                                    <th className="standings-cell standings-team-cell" style={{ padding: '1rem' }}>TEAM</th>
+                                                    <th className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>P</th>
+                                                    <th className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>W</th>
+                                                    <th className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>D</th>
+                                                    <th className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>L</th>
+                                                    <th className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>GF</th>
+                                                    <th className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>GA</th>
+                                                    <th className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>GD</th>
+                                                    <th className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>PTS</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -748,20 +748,20 @@ export default function EventDetails({ id }: { id: Id<"events"> }) {
                                                     const team = teams.find(t => t._id === s._id);
                                                     return (
                                                         <tr key={idx} style={{ borderBottom: idx === standings.length - 1 ? 'none' : '1px solid var(--border)' }}>
-                                                            <td style={{ padding: '1rem', fontWeight: 800, color: idx === 0 ? 'var(--accent)' : 'inherit' }}>
-                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                                            <td className="standings-cell standings-team-cell" style={{ padding: '1rem', fontWeight: 800, color: idx === 0 ? 'var(--accent)' : 'inherit' }}>
+                                                                <div className="standings-team-content" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                                                     <TeamBadge badgeType={team?.badgeType || 'color'} badgeValue={team?.badgeValue || '#eee'} size={24} />
                                                                     {s.name}
                                                                 </div>
                                                             </td>
-                                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.played}</td>
-                                                            <td style={{ padding: '1rem', textAlign: 'center', color: s.won > 0 ? 'var(--accent)' : 'inherit' }}>{s.won}</td>
-                                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.drawn}</td>
-                                                            <td style={{ padding: '1rem', textAlign: 'center', color: s.lost > 0 ? '#ef4444' : 'inherit' }}>{s.lost}</td>
-                                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.gf}</td>
-                                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.ga}</td>
-                                                            <td style={{ padding: '1rem', textAlign: 'center' }}>{s.gf - s.ga}</td>
-                                                            <td style={{ padding: '1rem', textAlign: 'center', color: 'var(--accent)', fontWeight: 800, fontSize: '1.1rem' }}>{s.pts}</td>
+                                                            <td className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>{s.played}</td>
+                                                            <td className="standings-cell" style={{ padding: '1rem', textAlign: 'center', color: s.won > 0 ? 'var(--accent)' : 'inherit' }}>{s.won}</td>
+                                                            <td className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>{s.drawn}</td>
+                                                            <td className="standings-cell" style={{ padding: '1rem', textAlign: 'center', color: s.lost > 0 ? '#ef4444' : 'inherit' }}>{s.lost}</td>
+                                                            <td className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>{s.gf}</td>
+                                                            <td className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>{s.ga}</td>
+                                                            <td className="standings-cell" style={{ padding: '1rem', textAlign: 'center' }}>{s.gf - s.ga}</td>
+                                                            <td className="standings-cell standings-points-value" style={{ padding: '1rem', textAlign: 'center', color: 'var(--accent)', fontWeight: 800, fontSize: '1.1rem' }}>{s.pts}</td>
                                                         </tr>
                                                     );
                                                 })}

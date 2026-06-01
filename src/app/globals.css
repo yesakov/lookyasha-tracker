@@ -269,6 +269,45 @@ select.input option {
   .scorer-grid {
     grid-template-columns: 1fr;
   }
+
+  .standings-table {
+    table-layout: fixed;
+    min-width: 100%;
+    font-size: 0.72rem;
+  }
+
+  .standings-cell {
+    padding: 0.45rem 0.2rem !important;
+    white-space: nowrap;
+  }
+
+  .standings-team-cell {
+    width: 32%;
+  }
+
+  .standings-team-content {
+    gap: 0.35rem !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .standings-team-content > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .standings-team-cell svg,
+  .standings-team-cell img {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .standings-points-value {
+    font-size: 0.95rem !important;
+  }
 }
 
 /* Match Score Row Enhancements */
