@@ -4,7 +4,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "convex/_generated/api";
 
 import Link from "next/link";
-import { Plus, Users } from "lucide-react";
+import { BarChart3, Plus, Users } from "lucide-react";
 import { useState } from "react";
 import { Header } from "./Header";
 
@@ -32,17 +32,23 @@ export default function EventList() {
 
     return (
         <div className="container animate-fade-in">
-            <Header title="Lookyasha" subtitle="Football Tracker">
-                <Link href="/players" className="btn btn-secondary" title="Manage Players" style={{ padding: '0.6rem' }}>
-                    <Users size={20} />
-                </Link>
+            <Header title="Lookyasha" subtitle="Football Tracker" />
+
+            <div className="main-actions">
                 <button
                     className="btn btn-primary"
                     onClick={() => setIsCreating(true)}
+                    style={{ width: '100%' }}
                 >
-                    <Plus size={18} /> <span className="mobile-hidden">New Event</span>
+                    <Plus size={18} /> New Event
                 </button>
-            </Header>
+                <Link href="/players" className="btn btn-secondary" title="Manage Players" style={{ width: '100%' }}>
+                    <Users size={18} /> Players
+                </Link>
+                <Link href="/stats" className="btn btn-secondary" title="Player Stats" style={{ width: '100%' }}>
+                    <BarChart3 size={18} /> Stats
+                </Link>
+            </div>
 
             {isCreating && (
                 <div className="glass-panel shadow-lg" style={{ padding: '1.5rem', marginBottom: '2rem', border: '1px solid var(--accent)' }}>

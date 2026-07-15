@@ -258,6 +258,19 @@ select.input option {
   gap: 1rem;
 }
 
+.main-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 520px) {
+  .main-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Responsive Grid for Scorer Selection */
 .scorer-grid {
   display: grid;
@@ -307,6 +320,25 @@ select.input option {
 
   .standings-points-value {
     font-size: 0.95rem !important;
+  }
+
+  .stats-table {
+    table-layout: auto !important;
+    font-size: 0.72rem;
+  }
+
+  .stats-player-cell {
+    width: auto !important;
+    min-width: 8rem;
+    padding-left: 0.35rem !important;
+    padding-right: 0.25rem !important;
+  }
+
+  .stats-number-cell,
+  .stats-table .standings-points-value {
+    width: 2.4rem;
+    padding-left: 0.2rem !important;
+    padding-right: 0.2rem !important;
   }
 }
 
