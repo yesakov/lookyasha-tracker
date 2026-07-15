@@ -17,6 +17,11 @@ type PlayerStat = {
     games: number;
 };
 
+function averagePerGame(total: number, games: number) {
+    if (games === 0) return "0.00";
+    return (total / games).toFixed(2);
+}
+
 const MONTH_FORMATTER = new Intl.DateTimeFormat("en", { month: "long", year: "numeric" });
 const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
 
@@ -124,7 +129,7 @@ function StatTable({
 }: {
     title: string;
     rows: PlayerStat[];
-    columns: { label: string; value: (row: PlayerStat) => number; highlight?: boolean }[];
+    columns: { label: string; value: (row: PlayerStat) => number | string; highlight?: boolean }[];
 }) {
     return (
         <section className="stack">
@@ -286,8 +291,8 @@ export default function StatsPage() {
                         rows={stats.games}
                         columns={[
                             { label: 'GP', value: (row) => row.games, highlight: true },
-                            { label: 'G', value: (row) => row.goals },
-                            { label: 'A', value: (row) => row.assists },
+                            { label: 'G/GP', value: (row) => averagePerGame(row.goals, row.games) },
+                            { label: 'A/GP', value: (row) => averagePerGame(row.assists, row.games) },
                         ]}
                     />
                 </div>
